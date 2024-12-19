@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Forum</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #4e4e4e);
+            color: #ffffff;
+        }
+
+        header {
+            background: #0d0d0d;
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 2px solid #333;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            color: #e63946;
+            text-transform: uppercase;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        nav button {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            background-color: #2a9d8f;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        nav button:hover {
+            background-color: #21867a;
+        }
+
+        .admin-section {
+            display: none;
+            margin: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #222;
+            color: #ccc;
+            font-size: 0.8rem;
+        }
+
+        .btn-admin {
+            background-color: #e63946;
+        }
+
+        .btn-english {
+            background-color: #457b9d;
+        }
+
+        .btn-arabic {
+            background-color: #2a9d8f;
+        }
+
+        .btn-contact {
+            background-color: #6a4c93;
+        }
+
+        .btn-language {
+            background-color: #f4a261;
+        }
+
+        form {
+            max-width: 400px;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        form input, form button {
+            width: 100%;
+            margin-bottom: 1rem;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 5px;
+        }
+
+        form button {
+            background-color: #e63946;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        form button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dark Forum</h1>
+    </header>
+
+    <nav>
+        <button class="btn-english">English Community</button>
+        <button class="btn-arabic">Arabic Community</button>
+        <button class="btn-contact">Contact Admin</button>
+        <button class="btn-language">Change Language</button>
+        <button class="btn-admin" id="admin-button">Admin Dashboard</button>
+    </nav>
+
+    <div id="form-section">
+        <form id="register-form">
+            <h2>Register</h2>
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="text" id="display-name" placeholder="Display Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password (8+ characters)" minlength="8" required>
+            <button type="submit">Register</button>
+        </form>
+
+        <form id="login-form" style="display: none;">
+            <h2>Login</h2>
+            <input type="text" id="login-username" placeholder="Username" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div class="admin-section" id="admin-tools">
+        <h2>Admin Tools</h2>
+        <button>Send News</button>
+        <button>Upgrade User Rank</button>
+    </div>
+
+    <footer>
+        <p>Dark Forum &copy; 2024</p>
+    </footer>
+</body>
+<script>
+    const adminUsername = 'Ares';
+    const adminPassword = 'Yosf66772233@@g';
+
+    document.getElementById('register-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const displayName = document.getElementById('display-name').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        if (username && displayName && email && password) {
+            const userInfo = {
+                username: username,
+                displayName: displayName,
+                email: email,
+                password: password
+            };
+            localStorage.setItem(username, JSON.stringify(userInfo));
+
+            alert('User registered successfully!');
+            document.getElementById('register-form').reset();
+        }
+    });
+
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const loginUsername = document.getElementById('login-username').value;
+        const loginPassword = document.getElementById('login-password').value;
+        const storedUserInfo = JSON.parse(localStorage.getItem(loginUsername));
+
+        if (storedUserInfo && storedUserInfo.password === loginPassword) {
+            alert('Login successful!');
+            
+            if (loginUsername === adminUsername && loginPassword === adminPassword) {
+                document.getElementById('admin-button').style.display = 'block';
+            } else {
+                document.getElementById('admin-button').style.display = 'none';
+            }
+        } else {
+            alert('Invalid username or password.');
+        }
+    });
+
+    document.querySelector('.btn-admin').addEventListener('click', () => {
+        const adminSection = document.getElementById('admin-tools');
+        adminSection.style.display = adminSection.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.querySelector('.btn-contact').addEventListener('click', () => {
+        alert('Contact Admin on Telegram: @tx_5w');
+    });
+
+    document.querySelector('.btn-language').addEventListener('click', () => {
+        const currentLang = document.documentElement.lang;
+        document.documentElement.lang = currentLang === 'en' ? 'ar' : 'en';
+        alert('Language changed!');
+    });
+</script>
+</html>
